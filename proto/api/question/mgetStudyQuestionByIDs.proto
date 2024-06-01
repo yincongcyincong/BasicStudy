@@ -1,0 +1,15 @@
+syntax = "proto2";
+package basic_study;
+
+option go_package = "github.com/yincongcyincong/BasicStudy/proto/api";
+
+import "github.com/yincongcyincong/BasicStudy/proto/api/basic_study.proto";
+
+
+message mgetStudyQuestionByIDsReq {
+  repeated uint64 ids = 1; // id
+}
+
+message mgetStudyQuestionByIDsData {
+  map<uint64, studyQuestion> info = 1; // information
+}

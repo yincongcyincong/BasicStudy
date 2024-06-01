@@ -1,0 +1,9 @@
+syntax = "proto2";
+package basic_study;
+
+option go_package = "github.com/yincongcyincong/BasicStudy/proto/api";
+
+
+message delStudyQuestionReq {
+  optional uint64 id = 1; // id
+}

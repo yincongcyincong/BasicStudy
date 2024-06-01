@@ -1,0 +1,13 @@
+syntax = "proto2";
+package basic_study;
+
+option go_package = "github.com/yincongcyincong/BasicStudy/proto/api";
+
+
+message addStudyTestReq {
+  optional string name = 1; // username
+}
+
+message addStudyTestData {
+  optional uint64 id = 1; // 新增记录ID
+}

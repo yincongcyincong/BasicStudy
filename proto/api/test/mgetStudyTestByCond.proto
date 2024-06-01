@@ -1,0 +1,18 @@
+syntax = "proto2";
+package basic_study;
+
+option go_package = "github.com/yincongcyincong/BasicStudy/proto/api";
+
+import "github.com/yincongcyincong/BasicStudy/proto/api/basic_study.proto";
+
+
+message mgetStudyTestByCondReq {
+  optional uint32 pn = 1; // query page number, default as 1
+  optional uint32 rn = 2; // query number, default as 20
+  optional uint64 id = 3; // id
+}
+
+message mgetStudyTestByCondData {
+  repeated studyTest info = 1; // information
+  optional uint32 total_num = 2; // total numbers
+}

@@ -1,0 +1,13 @@
+syntax = "proto2";
+package basic_study;
+
+option go_package = "github.com/yincongcyincong/BasicStudy/proto/api";
+
+
+message updateStudyUserReq {
+  optional uint64 id = 1; // id
+  optional uint64 create_time = 2; // create time
+  optional string username = 3; // username
+  optional string password = 4; // password
+  optional uint32 status = 5; // 1-normal 2-deleted
+}

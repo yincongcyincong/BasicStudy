@@ -1,0 +1,19 @@
+syntax = "proto2";
+package basic_study;
+
+option go_package = "github.com/yincongcyincong/BasicStudy/proto/api";
+
+
+message addStudyQuestionReq {
+
+
+  optional uint64 create_time = 1; // create time
+  optional string question = 2; // question
+  optional string answer = 3; // answer
+  optional uint64 test_id = 4; // test
+  optional uint32 type = 5; // 1-math 2-english 
+}
+
+message addStudyQuestionData {
+  optional uint64 id = 1; // 新增记录ID
+}

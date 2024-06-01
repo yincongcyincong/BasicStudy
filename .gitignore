@@ -17,6 +17,10 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
+*.log
+*.db
+.idea
+BasicStudy
 # Go workspace file
 go.work
 go.work.sum
