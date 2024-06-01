@@ -39,7 +39,7 @@ func NewStudyUserDao() *StudyUserDao {
 
 // StudyUserItem is a mapping object for basic_study.study_user table
 type StudyUserItem struct {
-	ID         *uint64 `ddb:"id" json:"id"`                   // id
+	Id         *uint64 `ddb:"id" json:"id"`                   // id
 	CreateTime *uint64 `ddb:"create_time" json:"create_time"` // create time
 	Username   *string `ddb:"username" json:"username"`       // username
 	Password   *string `ddb:"password" json:"password"`       // password

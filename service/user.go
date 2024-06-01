@@ -36,7 +36,7 @@ func AddStudyUser(ctx context.Context, input *api.AddStudyUserReq) (*api.AddStud
 
 	id, err := db.Add(ctx, insertReq)
 	if err != nil {
-		glog.Warningf("AddStudyUser insert mysql fail, err=%v, input=%+v", err, insertReq)
+		glog.Warningf("AddStudyUser insert db fail, err=%v, input=%+v", err, insertReq)
 		return nil, _const.DBQueryError, err
 	}
 
@@ -71,7 +71,7 @@ func UpdateStudyUser(ctx context.Context, input *api.UpdateStudyUserReq) (int, e
 
 	_, err := db.Update(ctx, updateReq, id)
 	if err != nil {
-		glog.Warningf("UpdateStudyUser update mysql fail, err=%v, input=%+v", err, updateReq)
+		glog.Warningf("UpdateStudyUser update db fail, err=%v, input=%+v", err, updateReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -94,7 +94,7 @@ func DelStudyUser(ctx context.Context, input *api.DelStudyUserReq) (int, error) 
 
 	_, err := db.Update(ctx, delReq, id)
 	if err != nil {
-		glog.Warningf("DelStudyUser update mysql fail, err=%v, input=%+v", err, delReq)
+		glog.Warningf("DelStudyUser update db fail, err=%v, input=%+v", err, delReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -128,7 +128,7 @@ func MgetStudyUserByIDs(ctx context.Context, input *api.MgetStudyUserByIDsReq) (
 	db := dao.NewStudyUserDao()
 	queryRes, err := db.MgetByIDs(ctx, queryIDs)
 	if err != nil {
-		glog.Warningf("MgetStudyUserByIDs query mysql fail, err=%v, query_id=%s", err, queryIDs)
+		glog.Warningf("MgetStudyUserByIDs query db fail, err=%v, query_id=%+v", err, queryIDs)
 		return nil, _const.DBQueryError, err
 	}
 	for _, res := range formatStudyUser(queryRes) {
@@ -157,7 +157,7 @@ func MgetStudyUserByCond(ctx context.Context, input *api.MgetStudyUserByCondReq)
 
 	queryRes, totalNum, err := db.MgetByPage(ctx, queryReq, input.GetPn(), input.GetRn())
 	if err != nil {
-		glog.Warningf("MgetStudyUserByCond query mysql fail, err=%v, input=%+v", err, input)
+		glog.Warningf("MgetStudyUserByCond query db fail, err=%v, input=%+v", err, input)
 		return nil, _const.DBQueryError, err
 	}
 
@@ -173,8 +173,8 @@ func formatStudyUser(srcData []dao.StudyUserItem) []*api.StudyUser {
 	dstData := make([]*api.StudyUser, 0, len(srcData))
 	for _, data := range srcData {
 		info := api.StudyUser{}
-		if data.ID != nil {
-			info.Id = proto.Uint64(*data.ID)
+		if data.Id != nil {
+			info.Id = proto.Uint64(*data.Id)
 		}
 		if data.CreateTime != nil {
 			info.CreateTime = proto.Uint64(*data.CreateTime)

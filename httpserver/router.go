@@ -23,5 +23,7 @@ func InitRouter() *gin.Engine {
 	router.POST("/user", controller.UpdateStudyUser)
 	router.DELETE("/user", controller.DelStudyUser)
 
+	router.PUT("/question", controller.AddStudyQuestion)
+
 	return router
 }

@@ -3,6 +3,9 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
+	"github.com/yincongcyincong/BasicStudy/bootstrap"
+	"github.com/yincongcyincong/BasicStudy/library/util"
 	"github.com/yincongcyincong/BasicStudy/model/dao"
 
 	"github.com/gin-gonic/gin"
@@ -21,6 +24,9 @@ func AddStudyQuestion(c *gin.Context, input *api.AddStudyQuestionReq) (*api.AddS
 		return nil, _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
+	tmp, err := util.GPT(bootstrap.GPTConfigInstance.SecretKey)
+	fmt.Println(tmp, err)
+
 	// 插入DB
 	db := dao.NewStudyQuestionDao()
 	insertReq := dao.StudyQuestionItem{}
@@ -37,7 +43,7 @@ func AddStudyQuestion(c *gin.Context, input *api.AddStudyQuestionReq) (*api.AddS
 		insertReq.Answer = infoAnswer
 	}
 	if input.TestId != nil {
-		insertReq.TestID = proto.Uint64(input.GetTestId())
+		insertReq.TestId = proto.Uint64(input.GetTestId())
 	}
 	if input.Type != nil {
 		infoType := uint8(input.GetType())
@@ -46,8 +52,8 @@ func AddStudyQuestion(c *gin.Context, input *api.AddStudyQuestionReq) (*api.AddS
 
 	id, err := db.Add(context.Background(), insertReq)
 	if err != nil {
-		glog.Warningf("AddStudyQuestion insert mysql fail, err=%v, input=%s", err, insertReq)
-		return nil, _const.DBQueryError, err
+		glog.Warningf("AddStudyQuestion insert db fail, err=%v, input=%+v", err, insertReq)
+		return nil, _const.DBExecError, err
 	}
 
 	data := &api.AddStudyQuestionData{
@@ -83,7 +89,7 @@ func UpdateStudyQuestion(c *gin.Context, input *api.UpdateStudyQuestionReq) (int
 		updateReq.Answer = infoAnswer
 	}
 	if input.TestId != nil {
-		updateReq.TestID = proto.Uint64(input.GetTestId())
+		updateReq.TestId = proto.Uint64(input.GetTestId())
 	}
 	if input.Type != nil {
 		infoType := uint8(input.GetType())
@@ -92,7 +98,7 @@ func UpdateStudyQuestion(c *gin.Context, input *api.UpdateStudyQuestionReq) (int
 
 	_, err := db.Update(context.Background(), updateReq, id)
 	if err != nil {
-		glog.Warningf("UpdateStudyQuestion update mysql fail, err=%v, input=%s", err, updateReq)
+		glog.Warningf("UpdateStudyQuestion update db fail, err=%v, input=%+v", err, updateReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -114,7 +120,7 @@ func DelStudyQuestion(c *gin.Context, input *api.DelStudyQuestionReq) (int, erro
 
 	_, err := db.Update(context.Background(), delReq, id)
 	if err != nil {
-		glog.Warningf("DelStudyQuestion update mysql fail, err=%v, input=%s", err, delReq)
+		glog.Warningf("DelStudyQuestion update db fail, err=%v, input=%+v", err, delReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -147,7 +153,7 @@ func MgetStudyQuestionByIDs(c *gin.Context, input *api.MgetStudyQuestionByIDsReq
 	db := dao.NewStudyQuestionDao()
 	queryRes, err := db.MgetByIDs(context.Background(), queryIDs)
 	if err != nil {
-		glog.Warningf("MgetStudyQuestionByIDs query mysql fail, err=%v, query_id=%s", err, &queryIDs)
+		glog.Warningf("MgetStudyQuestionByIDs query db fail, err=%v, query_id=%+v", err, &queryIDs)
 		return nil, _const.DBQueryError, err
 	}
 	for _, res := range formatStudyQuestion(queryRes) {
@@ -176,7 +182,7 @@ func MgetStudyQuestionByCond(c *gin.Context, input *api.MgetStudyQuestionByCondR
 
 	queryRes, totalNum, err := db.MgetByPage(context.Background(), queryReq, input.GetPn(), input.GetRn())
 	if err != nil {
-		glog.Warningf("MgetStudyQuestionByCond query mysql fail, err=%v, input=%s", err, input)
+		glog.Warningf("MgetStudyQuestionByCond query db fail, err=%v, input=%+v", err, input)
 		return nil, _const.DBQueryError, err
 	}
 
@@ -192,8 +198,8 @@ func formatStudyQuestion(srcData []dao.StudyQuestionItem) []*api.StudyQuestion {
 	dstData := make([]*api.StudyQuestion, 0, len(srcData))
 	for _, data := range srcData {
 		info := api.StudyQuestion{}
-		if data.ID != nil {
-			info.Id = proto.Uint64(*data.ID)
+		if data.Id != nil {
+			info.Id = proto.Uint64(*data.Id)
 		}
 		if data.CreateTime != nil {
 			info.CreateTime = proto.Uint64(*data.CreateTime)
@@ -206,8 +212,8 @@ func formatStudyQuestion(srcData []dao.StudyQuestionItem) []*api.StudyQuestion {
 			infoAnswer := string(data.Answer)
 			info.Answer = proto.String(infoAnswer)
 		}
-		if data.TestID != nil {
-			info.TestId = proto.Uint64(*data.TestID)
+		if data.TestId != nil {
+			info.TestId = proto.Uint64(*data.TestId)
 		}
 		if data.Type != nil {
 			infoType := uint32(*data.Type)

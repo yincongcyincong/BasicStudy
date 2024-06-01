@@ -11,7 +11,7 @@ import (
 )
 
 // addStudyQuestion 新增信息
-func addStudyQuestion(c *gin.Context) {
+func AddStudyQuestion(c *gin.Context) {
 	input := api.AddStudyQuestionReq{}
 	err := c.ShouldBindJSON(&input)
 	if err != nil {

@@ -32,7 +32,7 @@ func AddStudyTest(c *gin.Context, input *api.AddStudyTestReq) (*api.AddStudyTest
 
 	id, err := db.Add(context.Background(), insertReq)
 	if err != nil {
-		glog.Warningf("AddStudyTest insert mysql fail, err=%v, input=%s", err, insertReq)
+		glog.Warningf("AddStudyTest insert db fail, err=%v, input=%+v", err, insertReq)
 		return nil, _const.DBQueryError, err
 	}
 
@@ -64,7 +64,7 @@ func UpdateStudyTest(c *gin.Context, input *api.UpdateStudyTestReq) (int, error)
 
 	_, err := db.Update(context.Background(), updateReq, id)
 	if err != nil {
-		glog.Warningf("UpdateStudyTest update mysql fail, err=%v, input=%s", err, updateReq)
+		glog.Warningf("UpdateStudyTest update db fail, err=%v, input=%+v", err, updateReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -88,7 +88,7 @@ func DelStudyTest(c *gin.Context, input *api.DelStudyTestReq) (int, error) {
 
 	_, err := db.Update(context.Background(), delReq, id)
 	if err != nil {
-		glog.Warningf("DelStudyTest update mysql fail, err=%v, input=%s", err, delReq)
+		glog.Warningf("DelStudyTest update db fail, err=%v, input=%+v", err, delReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -121,7 +121,7 @@ func MgetStudyTestByIDs(c *gin.Context, input *api.MgetStudyTestByIDsReq) (*api.
 	db := dao.NewStudyTestDao()
 	queryRes, err := db.MgetByIDs(context.Background(), queryIDs)
 	if err != nil {
-		glog.Warningf("MgetStudyTestByIDs query mysql fail, err=%v, query_id=%s", err, &queryIDs)
+		glog.Warningf("MgetStudyTestByIDs query db fail, err=%v, query_id=%+v", err, &queryIDs)
 		return nil, _const.DBQueryError, err
 	}
 	for _, res := range formatStudyTest(queryRes) {
@@ -149,7 +149,7 @@ func MgetStudyTestByCond(c *gin.Context, input *api.MgetStudyTestByCondReq) (*ap
 
 	queryRes, totalNum, err := db.MgetByPage(context.Background(), queryReq, input.GetPn(), input.GetRn())
 	if err != nil {
-		glog.Warningf("MgetStudyTestByCond query mysql fail, err=%v, input=%s", err, input)
+		glog.Warningf("MgetStudyTestByCond query db fail, err=%v, input=%+v", err, input)
 		return nil, _const.DBQueryError, err
 	}
 
@@ -165,8 +165,8 @@ func formatStudyTest(srcData []dao.StudyTestItem) []*api.StudyTest {
 	dstData := make([]*api.StudyTest, 0, len(srcData))
 	for _, data := range srcData {
 		info := api.StudyTest{}
-		if data.ID != nil {
-			info.Id = proto.Uint64(*data.ID)
+		if data.Id != nil {
+			info.Id = proto.Uint64(*data.Id)
 		}
 		if data.Name != nil {
 			info.Name = proto.String(*data.Name)

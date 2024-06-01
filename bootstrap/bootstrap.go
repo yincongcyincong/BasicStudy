@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"flag"
 	"github.com/BurntSushi/toml"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/yincongcyincong/BasicStudy/library/util"
@@ -15,8 +16,13 @@ type AppConfig struct {
 	DataFile string `toml:"data_file"`
 }
 
+type GPT struct {
+	SecretKey string `toml:"secret_key"`
+}
+
 var (
 	AppConfigInstance = new(AppConfig)
+	GPTConfigInstance = new(GPT)
 	DB                *xorm.Engine
 )
 
@@ -27,6 +33,14 @@ func InitConf() {
 	if err != nil {
 		panic(err)
 	}
+
+	_, err = toml.DecodeFile("./conf/gpt.toml", GPTConfigInstance)
+	if err != nil {
+		panic(err)
+	}
+
+	flag.Parse()
+
 }
 
 // InitDB init database

@@ -37,7 +37,7 @@ func NewStudyTestDao() *StudyTestDao {
 
 // StudyTestItem is a mapping object for basic_study.study_test table
 type StudyTestItem struct {
-	ID   *uint64 `ddb:"id" json:"id"`     // id
+	Id   *uint64 `ddb:"id" json:"id"`     // id
 	Name *string `ddb:"name" json:"name"` // username
 }
 
