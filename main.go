@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/golang/glog"
+	"github.com/sirupsen/logrus"
 	"github.com/yincongcyincong/BasicStudy/bootstrap"
 	"github.com/yincongcyincong/BasicStudy/httpserver"
 	"net/http"
@@ -19,6 +19,9 @@ func main() {
 
 	// init database
 	bootstrap.InitDB()
+
+	// init log
+	bootstrap.InitLog()
 
 	// register routers
 	router := httpserver.InitRouter()
@@ -40,7 +43,7 @@ func main() {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	if err := srv.Shutdown(context.Background()); err != nil {
-		glog.Fatalf("Server forced to shutdown:", err)
+		logrus.Fatalf("Server forced to shutdown:", err)
 	}
-	glog.Warningf("Server exiting")
+	logrus.Warningf("Server exiting")
 }

@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/golang/glog"
+	"github.com/sirupsen/logrus"
 	_const "github.com/yincongcyincong/BasicStudy/library/const"
 	"github.com/yincongcyincong/BasicStudy/library/util"
 	"github.com/yincongcyincong/BasicStudy/service"
@@ -21,7 +21,7 @@ func AddStudyQuestion(c *gin.Context) {
 
 	data, errNo, err := service.AddStudyQuestion(c, &input)
 	if err != nil || errNo != _const.SuccNo {
-		glog.Warningf("addStudyQuestion process error, err=%v", err)
+		logrus.Warningf("addStudyQuestion process error, err=%v", err)
 		util.FailureWithErrMsg(c, errNo, "")
 		return
 	}
@@ -33,14 +33,14 @@ func updateStudyQuestion(c *gin.Context) {
 	input := api.UpdateStudyQuestionReq{}
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
-		glog.Warningf("updateStudyQuestion input process error, err=%v", err)
+		logrus.Warningf("updateStudyQuestion input process error, err=%v", err)
 		util.FailureWithErrMsg(c, _const.ParamErrorNo, "")
 		return
 	}
 
 	errNo, err := service.UpdateStudyQuestion(c, &input)
 	if err != nil || errNo != _const.SuccNo {
-		glog.Warningf("updateStudyQuestion process error, err=%v", err)
+		logrus.Warningf("updateStudyQuestion process error, err=%v", err)
 		util.FailureWithErrMsg(c, errNo, "")
 		return
 	}
@@ -52,14 +52,14 @@ func delStudyQuestion(c *gin.Context) {
 	input := api.DelStudyQuestionReq{}
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
-		glog.Warningf("delStudyQuestion input process error, err=%v", err)
+		logrus.Warningf("delStudyQuestion input process error, err=%v", err)
 		util.FailureWithErrMsg(c, _const.ParamErrorNo, "")
 		return
 	}
 
 	errNo, err := service.DelStudyQuestion(c, &input)
 	if err != nil || errNo != _const.SuccNo {
-		glog.Warningf("delStudyQuestion process error, err=%v", err)
+		logrus.Warningf("delStudyQuestion process error, err=%v", err)
 		util.FailureWithErrMsg(c, errNo, "")
 		return
 	}
@@ -71,14 +71,14 @@ func mgetStudyQuestionByIDs(c *gin.Context) {
 	input := api.MgetStudyQuestionByIDsReq{}
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
-		glog.Warningf("mgetStudyQuestionByIDs input process error, err=%v", err)
+		logrus.Warningf("mgetStudyQuestionByIDs input process error, err=%v", err)
 		util.FailureWithErrMsg(c, _const.ParamErrorNo, "")
 		return
 	}
 
 	data, errNo, err := service.MgetStudyQuestionByIDs(c, &input)
 	if err != nil || errNo != _const.SuccNo {
-		glog.Warningf("mgetStudyQuestionByIDs process error, err=%v", err)
+		logrus.Warningf("mgetStudyQuestionByIDs process error, err=%v", err)
 		util.FailureWithErrMsg(c, errNo, "")
 		return
 	}
@@ -90,14 +90,14 @@ func mgetStudyQuestionByCond(c *gin.Context) {
 	input := api.MgetStudyQuestionByCondReq{}
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
-		glog.Warningf("mgetStudyQuestionByCond input process error, err=%v", err)
+		logrus.Warningf("mgetStudyQuestionByCond input process error, err=%v", err)
 		util.FailureWithErrMsg(c, _const.ParamErrorNo, "")
 		return
 	}
 
 	data, errNo, err := service.MgetStudyQuestionByCond(c, &input)
 	if err != nil || errNo != _const.SuccNo {
-		glog.Warningf("mgetStudyQuestionByCond process error, err=%v", err)
+		logrus.Warningf("mgetStudyQuestionByCond process error, err=%v", err)
 		util.FailureWithErrMsg(c, errNo, "")
 		return
 	}

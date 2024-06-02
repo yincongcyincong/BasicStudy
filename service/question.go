@@ -4,12 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"github.com/yincongcyincong/BasicStudy/bootstrap"
 	"github.com/yincongcyincong/BasicStudy/library/util"
 	"github.com/yincongcyincong/BasicStudy/model/dao"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang/glog"
 	_const "github.com/yincongcyincong/BasicStudy/library/const"
 	"github.com/yincongcyincong/BasicStudy/proto/api"
 	"google.golang.org/protobuf/proto"
@@ -20,7 +20,7 @@ import (
 func AddStudyQuestion(c *gin.Context, input *api.AddStudyQuestionReq) (*api.AddStudyQuestionData, int, error) {
 	// 参数校验
 	if input == nil {
-		glog.Warningf("AddStudyQuestion input invalid, input=%+v", input)
+		logrus.Warningf("AddStudyQuestion input invalid, input=%+v", input)
 		return nil, _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -52,7 +52,7 @@ func AddStudyQuestion(c *gin.Context, input *api.AddStudyQuestionReq) (*api.AddS
 
 	id, err := db.Add(context.Background(), insertReq)
 	if err != nil {
-		glog.Warningf("AddStudyQuestion insert db fail, err=%v, input=%+v", err, insertReq)
+		logrus.Warningf("AddStudyQuestion insert db fail, err=%v, input=%+v", err, insertReq)
 		return nil, _const.DBExecError, err
 	}
 
@@ -67,7 +67,7 @@ func AddStudyQuestion(c *gin.Context, input *api.AddStudyQuestionReq) (*api.AddS
 func UpdateStudyQuestion(c *gin.Context, input *api.UpdateStudyQuestionReq) (int, error) {
 	// 参数校验
 	if input == nil || input.GetId() <= 0 {
-		glog.Warningf("UpdateStudyQuestion input invalid, input=%+v", input)
+		logrus.Warningf("UpdateStudyQuestion input invalid, input=%+v", input)
 		return _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -98,7 +98,7 @@ func UpdateStudyQuestion(c *gin.Context, input *api.UpdateStudyQuestionReq) (int
 
 	_, err := db.Update(context.Background(), updateReq, id)
 	if err != nil {
-		glog.Warningf("UpdateStudyQuestion update db fail, err=%v, input=%+v", err, updateReq)
+		logrus.Warningf("UpdateStudyQuestion update db fail, err=%v, input=%+v", err, updateReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -109,7 +109,7 @@ func UpdateStudyQuestion(c *gin.Context, input *api.UpdateStudyQuestionReq) (int
 func DelStudyQuestion(c *gin.Context, input *api.DelStudyQuestionReq) (int, error) {
 	// 参数校验
 	if input == nil || input.GetId() <= 0 {
-		glog.Warningf("DelStudyQuestion input invalid, input=%+v", input)
+		logrus.Warningf("DelStudyQuestion input invalid, input=%+v", input)
 		return _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -120,7 +120,7 @@ func DelStudyQuestion(c *gin.Context, input *api.DelStudyQuestionReq) (int, erro
 
 	_, err := db.Update(context.Background(), delReq, id)
 	if err != nil {
-		glog.Warningf("DelStudyQuestion update db fail, err=%v, input=%+v", err, delReq)
+		logrus.Warningf("DelStudyQuestion update db fail, err=%v, input=%+v", err, delReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -132,7 +132,7 @@ func MgetStudyQuestionByIDs(c *gin.Context, input *api.MgetStudyQuestionByIDsReq
 	// 参数校验
 
 	if input == nil || len(input.GetIds()) <= 0 {
-		glog.Warningf("MgetStudyQuestionByIDs input invalid, input=%+v", input)
+		logrus.Warningf("MgetStudyQuestionByIDs input invalid, input=%+v", input)
 		return nil, _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -153,7 +153,7 @@ func MgetStudyQuestionByIDs(c *gin.Context, input *api.MgetStudyQuestionByIDsReq
 	db := dao.NewStudyQuestionDao()
 	queryRes, err := db.MgetByIDs(context.Background(), queryIDs)
 	if err != nil {
-		glog.Warningf("MgetStudyQuestionByIDs query db fail, err=%v, query_id=%+v", err, &queryIDs)
+		logrus.Warningf("MgetStudyQuestionByIDs query db fail, err=%v, query_id=%+v", err, &queryIDs)
 		return nil, _const.DBQueryError, err
 	}
 	for _, res := range formatStudyQuestion(queryRes) {
@@ -172,7 +172,7 @@ func MgetStudyQuestionByCond(c *gin.Context, input *api.MgetStudyQuestionByCondR
 	// 参数校验
 
 	if input == nil {
-		glog.Warningf("MgetStudyQuestionByCond input invalid, input=%+v", input)
+		logrus.Warningf("MgetStudyQuestionByCond input invalid, input=%+v", input)
 		return nil, _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -182,7 +182,7 @@ func MgetStudyQuestionByCond(c *gin.Context, input *api.MgetStudyQuestionByCondR
 
 	queryRes, totalNum, err := db.MgetByPage(context.Background(), queryReq, input.GetPn(), input.GetRn())
 	if err != nil {
-		glog.Warningf("MgetStudyQuestionByCond query db fail, err=%v, input=%+v", err, input)
+		logrus.Warningf("MgetStudyQuestionByCond query db fail, err=%v, input=%+v", err, input)
 		return nil, _const.DBQueryError, err
 	}
 

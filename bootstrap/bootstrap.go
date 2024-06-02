@@ -4,7 +4,9 @@ import (
 	"flag"
 	"github.com/BurntSushi/toml"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/sirupsen/logrus"
 	"github.com/yincongcyincong/BasicStudy/library/util"
+	"os"
 	"xorm.io/xorm"
 )
 
@@ -52,7 +54,7 @@ func InitDB() {
 		panic(err)
 	}
 	DB.SetMaxIdleConns(10)
-	DB.SetMaxOpenConns(1)
+	DB.SetMaxOpenConns(10)
 	err = DB.Ping()
 	if err != nil {
 		panic(err)
@@ -61,6 +63,16 @@ func InitDB() {
 	if !dbExist {
 		createDB()
 	}
+}
+
+func InitLog() {
+	logrus.SetLevel(logrus.InfoLevel)
+	logrus.SetFormatter(&logrus.TextFormatter{})
+	file, err := os.OpenFile("./log/logrus.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		panic(err)
+	}
+	logrus.SetOutput(file)
 }
 
 // createDB create database

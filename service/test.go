@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"errors"
+	"github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang/glog"
 	_const "github.com/yincongcyincong/BasicStudy/library/const"
 	"github.com/yincongcyincong/BasicStudy/model/dao"
 	"github.com/yincongcyincong/BasicStudy/proto/api"
@@ -18,7 +18,7 @@ func AddStudyTest(c *gin.Context, input *api.AddStudyTestReq) (*api.AddStudyTest
 	// 参数校验
 
 	if input == nil {
-		glog.Warningf("AddStudyTest input invalid, input=%+v", input)
+		logrus.Warningf("AddStudyTest input invalid, input=%+v", input)
 		return nil, _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -32,7 +32,7 @@ func AddStudyTest(c *gin.Context, input *api.AddStudyTestReq) (*api.AddStudyTest
 
 	id, err := db.Add(context.Background(), insertReq)
 	if err != nil {
-		glog.Warningf("AddStudyTest insert db fail, err=%v, input=%+v", err, insertReq)
+		logrus.Warningf("AddStudyTest insert db fail, err=%v, input=%+v", err, insertReq)
 		return nil, _const.DBQueryError, err
 	}
 
@@ -48,7 +48,7 @@ func UpdateStudyTest(c *gin.Context, input *api.UpdateStudyTestReq) (int, error)
 	// 参数校验
 
 	if input == nil || input.GetId() <= 0 {
-		glog.Warningf("UpdateStudyTest input invalid, input=%+v", input)
+		logrus.Warningf("UpdateStudyTest input invalid, input=%+v", input)
 		return _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -64,7 +64,7 @@ func UpdateStudyTest(c *gin.Context, input *api.UpdateStudyTestReq) (int, error)
 
 	_, err := db.Update(context.Background(), updateReq, id)
 	if err != nil {
-		glog.Warningf("UpdateStudyTest update db fail, err=%v, input=%+v", err, updateReq)
+		logrus.Warningf("UpdateStudyTest update db fail, err=%v, input=%+v", err, updateReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -76,7 +76,7 @@ func DelStudyTest(c *gin.Context, input *api.DelStudyTestReq) (int, error) {
 	// 参数校验
 
 	if input == nil || input.GetId() <= 0 {
-		glog.Warningf("DelStudyTest input invalid, input=%+v", input)
+		logrus.Warningf("DelStudyTest input invalid, input=%+v", input)
 		return _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -88,7 +88,7 @@ func DelStudyTest(c *gin.Context, input *api.DelStudyTestReq) (int, error) {
 
 	_, err := db.Update(context.Background(), delReq, id)
 	if err != nil {
-		glog.Warningf("DelStudyTest update db fail, err=%v, input=%+v", err, delReq)
+		logrus.Warningf("DelStudyTest update db fail, err=%v, input=%+v", err, delReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -100,7 +100,7 @@ func MgetStudyTestByIDs(c *gin.Context, input *api.MgetStudyTestByIDsReq) (*api.
 	// 参数校验
 
 	if input == nil || len(input.GetIds()) <= 0 {
-		glog.Warningf("MgetStudyTestByIDs input invalid, input=%+v", input)
+		logrus.Warningf("MgetStudyTestByIDs input invalid, input=%+v", input)
 		return nil, _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -121,7 +121,7 @@ func MgetStudyTestByIDs(c *gin.Context, input *api.MgetStudyTestByIDsReq) (*api.
 	db := dao.NewStudyTestDao()
 	queryRes, err := db.MgetByIDs(context.Background(), queryIDs)
 	if err != nil {
-		glog.Warningf("MgetStudyTestByIDs query db fail, err=%v, query_id=%+v", err, &queryIDs)
+		logrus.Warningf("MgetStudyTestByIDs query db fail, err=%v, query_id=%+v", err, &queryIDs)
 		return nil, _const.DBQueryError, err
 	}
 	for _, res := range formatStudyTest(queryRes) {
@@ -139,7 +139,7 @@ func MgetStudyTestByIDs(c *gin.Context, input *api.MgetStudyTestByIDsReq) (*api.
 func MgetStudyTestByCond(c *gin.Context, input *api.MgetStudyTestByCondReq) (*api.MgetStudyTestByCondData, int, error) {
 	// 参数校验
 	if input == nil {
-		glog.Warningf("MgetStudyTestByCond input invalid, input=%+v", input)
+		logrus.Warningf("MgetStudyTestByCond input invalid, input=%+v", input)
 		return nil, _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -149,7 +149,7 @@ func MgetStudyTestByCond(c *gin.Context, input *api.MgetStudyTestByCondReq) (*ap
 
 	queryRes, totalNum, err := db.MgetByPage(context.Background(), queryReq, input.GetPn(), input.GetRn())
 	if err != nil {
-		glog.Warningf("MgetStudyTestByCond query db fail, err=%v, input=%+v", err, input)
+		logrus.Warningf("MgetStudyTestByCond query db fail, err=%v, input=%+v", err, input)
 		return nil, _const.DBQueryError, err
 	}
 

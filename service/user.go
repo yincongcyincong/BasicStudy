@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"errors"
-	"github.com/golang/glog"
+	"github.com/sirupsen/logrus"
 	_const "github.com/yincongcyincong/BasicStudy/library/const"
 	"github.com/yincongcyincong/BasicStudy/model/dao"
 	"github.com/yincongcyincong/BasicStudy/proto/api"
@@ -16,7 +16,7 @@ func AddStudyUser(ctx context.Context, input *api.AddStudyUserReq) (*api.AddStud
 	// 参数校验
 
 	if input == nil {
-		glog.Warningf("AddStudyUser input invalid, input=%+v", input)
+		logrus.Warningf("AddStudyUser input invalid, input=%+v", input)
 		return nil, _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -36,7 +36,7 @@ func AddStudyUser(ctx context.Context, input *api.AddStudyUserReq) (*api.AddStud
 
 	id, err := db.Add(ctx, insertReq)
 	if err != nil {
-		glog.Warningf("AddStudyUser insert db fail, err=%v, input=%+v", err, insertReq)
+		logrus.Warningf("AddStudyUser insert db fail, err=%v, input=%+v", err, insertReq)
 		return nil, _const.DBQueryError, err
 	}
 
@@ -52,7 +52,7 @@ func UpdateStudyUser(ctx context.Context, input *api.UpdateStudyUserReq) (int, e
 	// 参数校验
 
 	if input == nil || input.GetId() <= 0 {
-		glog.Warningf("UpdateStudyUser input invalid, input=%+v", input)
+		logrus.Warningf("UpdateStudyUser input invalid, input=%+v", input)
 		return _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -71,7 +71,7 @@ func UpdateStudyUser(ctx context.Context, input *api.UpdateStudyUserReq) (int, e
 
 	_, err := db.Update(ctx, updateReq, id)
 	if err != nil {
-		glog.Warningf("UpdateStudyUser update db fail, err=%v, input=%+v", err, updateReq)
+		logrus.Warningf("UpdateStudyUser update db fail, err=%v, input=%+v", err, updateReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -82,7 +82,7 @@ func UpdateStudyUser(ctx context.Context, input *api.UpdateStudyUserReq) (int, e
 func DelStudyUser(ctx context.Context, input *api.DelStudyUserReq) (int, error) {
 	// 参数校验
 	if input == nil || input.GetId() <= 0 {
-		glog.Warningf("DelStudyUser input invalid, input=%+v", input)
+		logrus.Warningf("DelStudyUser input invalid, input=%+v", input)
 		return _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -94,7 +94,7 @@ func DelStudyUser(ctx context.Context, input *api.DelStudyUserReq) (int, error) 
 
 	_, err := db.Update(ctx, delReq, id)
 	if err != nil {
-		glog.Warningf("DelStudyUser update db fail, err=%v, input=%+v", err, delReq)
+		logrus.Warningf("DelStudyUser update db fail, err=%v, input=%+v", err, delReq)
 		return _const.DBQueryError, err
 	}
 	return _const.SuccNo, nil
@@ -106,7 +106,7 @@ func MgetStudyUserByIDs(ctx context.Context, input *api.MgetStudyUserByIDsReq) (
 	// 参数校验
 
 	if input == nil || len(input.GetIds()) <= 0 {
-		glog.Warningf("MgetStudyUserByIDs input invalid, input=%+v", input)
+		logrus.Warningf("MgetStudyUserByIDs input invalid, input=%+v", input)
 		return nil, _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -128,7 +128,7 @@ func MgetStudyUserByIDs(ctx context.Context, input *api.MgetStudyUserByIDsReq) (
 	db := dao.NewStudyUserDao()
 	queryRes, err := db.MgetByIDs(ctx, queryIDs)
 	if err != nil {
-		glog.Warningf("MgetStudyUserByIDs query db fail, err=%v, query_id=%+v", err, queryIDs)
+		logrus.Warningf("MgetStudyUserByIDs query db fail, err=%v, query_id=%+v", err, queryIDs)
 		return nil, _const.DBQueryError, err
 	}
 	for _, res := range formatStudyUser(queryRes) {
@@ -147,7 +147,7 @@ func MgetStudyUserByCond(ctx context.Context, input *api.MgetStudyUserByCondReq)
 	// 参数校验
 
 	if input == nil {
-		glog.Warningf("MgetStudyUserByCond input invalid, input=%+v", input)
+		logrus.Warningf("MgetStudyUserByCond input invalid, input=%+v", input)
 		return nil, _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
@@ -157,7 +157,7 @@ func MgetStudyUserByCond(ctx context.Context, input *api.MgetStudyUserByCondReq)
 
 	queryRes, totalNum, err := db.MgetByPage(ctx, queryReq, input.GetPn(), input.GetRn())
 	if err != nil {
-		glog.Warningf("MgetStudyUserByCond query db fail, err=%v, input=%+v", err, input)
+		logrus.Warningf("MgetStudyUserByCond query db fail, err=%v, input=%+v", err, input)
 		return nil, _const.DBQueryError, err
 	}
 
