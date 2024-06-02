@@ -25,5 +25,11 @@ func InitRouter() *gin.Engine {
 
 	router.PUT("/question", controller.AddStudyQuestion)
 
+	router.POST("/dologin", controller.DoLogin)
+
+	router.LoadHTMLGlob("view/**/*")
+	router.StaticFS("/static", gin.Dir("./static", true))
+	router.GET("/login", controller.Login)
+
 	return router
 }

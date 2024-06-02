@@ -84,6 +84,23 @@ func (dao *StudyUserDao) MgetByIDs(ctx context.Context, ids []uint64) ([]StudyUs
 	return res, nil
 }
 
+// MgetByUsername按照ID批量查询信息
+func (dao *StudyUserDao) MgetByUsername(ctx context.Context, username string) (*StudyUserItem, error) {
+	res := new(StudyUserItem)
+	where := map[string]any{
+		"username": username,
+	}
+
+	// selectFields := []string{}
+	selectFields := studyUserSelectFields
+
+	err := dao.BaseSelectConvert(ctx, where, selectFields, res)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 // MgetByPage 按照指定条件查询信息
 func (dao *StudyUserDao) MgetByPage(ctx context.Context, data StudyUserItem, pn, rn uint32) ([]StudyUserItem, int64, error) {
 	where := map[string]any{}

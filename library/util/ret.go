@@ -23,7 +23,7 @@ func FailureWithErrMsg(ctx *gin.Context, errno int, errmsg string) {
 
 func Success(ctx *gin.Context, data interface{}) {
 	response := gin.H{
-		"errno":  _const.SuccMsg,
+		"errno":  _const.SuccNo,
 		"errmsg": _const.SuccMsg,
 		"data":   data,
 	}
