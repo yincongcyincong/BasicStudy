@@ -30,3 +30,14 @@ func Success(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusOK, response)
 	return
 }
+
+func SuccessWithUrl(ctx *gin.Context, data interface{}, url string) {
+	response := gin.H{
+		"errno":        _const.SuccNo,
+		"errmsg":       _const.SuccMsg,
+		"data":         data,
+		"redirect_url": url,
+	}
+	ctx.JSON(http.StatusOK, response)
+	return
+}

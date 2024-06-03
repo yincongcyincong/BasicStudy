@@ -27,14 +27,15 @@ $(function() {
             contentType: 'application/json',
             data: JSON.stringify({ username: u, password: p }),
             success: function(response) {
-                // 处理成功响应
-                console.log('Login successful:', response);
-                alert('Login successful!');
+                if(response.errno != 0) {
+                    Layers.failedMsg(response.errmsg)
+                } else {
+                    Layers.successMsg(response.errmsg)
+                }
+                Common.redirect(response.redirect_url);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                // 处理错误响应
-                console.log('Login failed:', textStatus, errorThrown);
-                $('#error-message').text('Login failed: ' + jqXHR.responseText);
+                Layers.failedMsg(response.message)
             }
         });
         return

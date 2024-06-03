@@ -3,3 +3,5 @@ http_listen = "0.0.0.0:18080"
 
 db_file = "data/sql/basic_study.sql"
 data_file = "data/basic_study.db"
+
+login_secret = "basic_auth"

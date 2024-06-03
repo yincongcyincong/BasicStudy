@@ -12,15 +12,15 @@ var Common = {
 			data : {'arr':data},
 			dataType: "json",
 			success : function(response) {
-				if(response.code == 0) {
-					Layers.failedMsg(response.message)
+				if(response.errno != 0) {
+					Layers.failedMsg(response.errmsg)
 				} else {
-					Layers.successMsg(response.message)
+					Layers.successMsg(response.errmsg)
 				}
-				Common.redirect(response.redirect.url);
+				Common.redirect(response.redirect_url);
 			},
 			error : function(response) {
-				Layers.failedMsg(response.message)
+				Layers.failedMsg(response.errmsg)
 			}
 		});
 	},

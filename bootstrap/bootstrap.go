@@ -16,6 +16,8 @@ type AppConfig struct {
 
 	DBFile   string `toml:"db_file"`
 	DataFile string `toml:"data_file"`
+
+	LoginSecret string `toml:"login_secret"`
 }
 
 type GPT struct {

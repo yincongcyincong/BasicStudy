@@ -11,25 +11,15 @@ func InitRouter() *gin.Engine {
 	// Recovery middleware recovers from any panics and writes a 500 if there was one.
 	router.Use(gin.Recovery())
 
-	// Authorization group
-	// authorized := r.Group("/", AuthRequired())
-	// exactly the same as:
-	//authorized := router.Group("/")
-	//authorized.POST("/login", loginEndpoint)
-	//authorized.POST("/submit", submitEndpoint)
-	//authorized.POST("/read", readEndpoint)
+	// login
+	router.LoadHTMLGlob("view/**/*")
+	router.StaticFS("/static", gin.Dir("./static", true))
 
 	router.PUT("/user", controller.AddStudyUser)
 	router.POST("/user", controller.UpdateStudyUser)
 	router.DELETE("/user", controller.DelStudyUser)
-
 	router.PUT("/question", controller.AddStudyQuestion)
-
-	router.POST("/dologin", controller.DoLogin)
-
-	router.LoadHTMLGlob("view/**/*")
-	router.StaticFS("/static", gin.Dir("./static", true))
-	router.GET("/login", controller.Login)
+	router.POST("/choose_user", controller.ChooseUser)
 
 	return router
 }
