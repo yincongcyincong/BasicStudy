@@ -2,12 +2,14 @@ package util
 
 import (
 	"context"
-	"fmt"
 	"github.com/sashabaranov/go-openai"
 )
 
 func GPT(token string) (string, error) {
-	client := openai.NewClient(token)
+	c := openai.DefaultConfig(token)
+	c.BaseURL = "https://api.chatanywhere.tech"
+
+	client := openai.NewClientWithConfig(c)
 	resp, err := client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
@@ -22,9 +24,8 @@ func GPT(token string) (string, error) {
 	)
 
 	if err != nil {
-		return "",err
+		return "", err
 	}
 
-	fmt.Println(fmt.Sprintf("%+v", resp.Choices[0]))
 	return resp.Choices[0].Message.Content, nil
 }
