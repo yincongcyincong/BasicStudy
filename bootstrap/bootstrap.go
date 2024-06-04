@@ -17,16 +17,23 @@ type AppConfig struct {
 	DBFile   string `toml:"db_file"`
 	DataFile string `toml:"data_file"`
 
-	LoginSecret string `toml:"login_secret"`
+	ChatType string `toml:"chat_type"`
+
 }
 
 type GPT struct {
 	SecretKey string `toml:"secret_key"`
 }
 
+type ErNie struct {
+	Ak string `toml:"ak"`
+	Sk string `toml:"sk"`
+}
+
 var (
 	AppConfigInstance = new(AppConfig)
 	GPTConfigInstance = new(GPT)
+	ErNieConfigInstance = new(ErNie)
 	DB                *xorm.Engine
 )
 
@@ -39,6 +46,11 @@ func InitConf() {
 	}
 
 	_, err = toml.DecodeFile("./conf/gpt.toml", GPTConfigInstance)
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = toml.DecodeFile("./conf/ernie.toml", ErNieConfigInstance)
 	if err != nil {
 		panic(err)
 	}

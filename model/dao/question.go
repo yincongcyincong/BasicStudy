@@ -43,8 +43,8 @@ func NewStudyQuestionDao() *StudyQuestionDao {
 type StudyQuestionItem struct {
 	Id         *uint64 `ddb:"id" json:"id"`                   // id
 	CreateTime *uint64 `ddb:"create_time" json:"create_time"` // create time
-	Question   []byte  `ddb:"question" json:"question"`       // question
-	Answer     []byte  `ddb:"answer" json:"answer"`           // answer
+	Question   *string  `ddb:"question" json:"question"`       // question
+	Answer     *string  `ddb:"answer" json:"answer"`           // answer
 	TestId     *uint64 `ddb:"test_id" json:"test_id"`         // test
 	Type       *uint8  `ddb:"type" json:"type"`               // 1-math 2-english
 }

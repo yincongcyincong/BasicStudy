@@ -6,7 +6,7 @@ CREATE TABLE `study_user`
     `status`      INT          DEFAULT 1  NOT NULL --'1-normal 2-deleted'
 );
 
-INSERT INTO `study_user` (`create_time`, `username`) VALUES ( 1717294770, 'basic_study');
+INSERT INTO `study_user` (`create_time`, `username`) VALUES (1717294770, 'basic_study');
 
 CREATE TABLE `study_question`
 (
@@ -14,6 +14,7 @@ CREATE TABLE `study_question`
     `create_time` INT NOT NULL,
     `question`    TEXT DEFAULT '',
     `answer`      TEXT DEFAULT '',
+    `analysis`    TEXT DEFAULT '',
     `test_id`     INT  DEFAULT 0,
     `type`        INT NOT NULL --'1-math 2-english '
 );

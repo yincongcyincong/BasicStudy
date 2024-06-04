@@ -4,15 +4,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"github.com/yincongcyincong/BasicStudy/bootstrap"
+	_const "github.com/yincongcyincong/BasicStudy/library/const"
 	"github.com/yincongcyincong/BasicStudy/library/util"
 	"github.com/yincongcyincong/BasicStudy/model/dao"
-
-	"github.com/gin-gonic/gin"
-	_const "github.com/yincongcyincong/BasicStudy/library/const"
 	"github.com/yincongcyincong/BasicStudy/proto/api"
 	"google.golang.org/protobuf/proto"
+	"strings"
 )
 
 // AddStudyQuestion 新增信息
@@ -24,8 +24,16 @@ func AddStudyQuestion(c *gin.Context, input *api.AddStudyQuestionReq) (*api.AddS
 		return nil, _const.ParamErrorNo, errors.New("input params invalid")
 	}
 
-	tmp, err := util.GPT(bootstrap.GPTConfigInstance.SecretKey)
-	fmt.Println(tmp, err)
+	//message := []string{
+	//	fmt.Sprintf(_const.CNCalPrompt, 10, 100, "加减乘除"),
+	//}
+	//questionInfo, err := util.GPT(bootstrap.GPTConfigInstance.SecretKey, message)
+
+	message := []string{
+		fmt.Sprintf(_const.ErNiePrompt, 10, 100, "加减乘除"),
+	}
+	questionInfo, err := util.ErNie(bootstrap.ErNieConfigInstance.Ak, bootstrap.ErNieConfigInstance.Sk, message)
+	fmt.Println(questionInfo)
 
 	// 插入DB
 	db := dao.NewStudyQuestionDao()
@@ -34,14 +42,10 @@ func AddStudyQuestion(c *gin.Context, input *api.AddStudyQuestionReq) (*api.AddS
 	if input.CreateTime != nil {
 		insertReq.CreateTime = proto.Uint64(input.GetCreateTime())
 	}
-	if input.Question != nil {
-		infoQuestion := []byte(input.GetQuestion())
-		insertReq.Question = infoQuestion
-	}
-	if input.Answer != nil {
-		infoAnswer := []byte(input.GetAnswer())
-		insertReq.Answer = infoAnswer
-	}
+
+	qa := strings.Split(questionInfo, "参考答案")
+	insertReq.Question = proto.String(qa[0])
+	insertReq.Answer = proto.String(qa[1])
 	if input.TestId != nil {
 		insertReq.TestId = proto.Uint64(input.GetTestId())
 	}
@@ -79,14 +83,6 @@ func UpdateStudyQuestion(c *gin.Context, input *api.UpdateStudyQuestionReq) (int
 
 	if input.CreateTime != nil {
 		updateReq.CreateTime = proto.Uint64(input.GetCreateTime())
-	}
-	if input.Question != nil {
-		infoQuestion := []byte(input.GetQuestion())
-		updateReq.Question = infoQuestion
-	}
-	if input.Answer != nil {
-		infoAnswer := []byte(input.GetAnswer())
-		updateReq.Answer = infoAnswer
 	}
 	if input.TestId != nil {
 		updateReq.TestId = proto.Uint64(input.GetTestId())
@@ -205,12 +201,10 @@ func formatStudyQuestion(srcData []dao.StudyQuestionItem) []*api.StudyQuestion {
 			info.CreateTime = proto.Uint64(*data.CreateTime)
 		}
 		if data.Question != nil {
-			infoQuestion := string(data.Question)
-			info.Question = proto.String(infoQuestion)
+			info.Question = data.Question
 		}
 		if data.Answer != nil {
-			infoAnswer := string(data.Answer)
-			info.Answer = proto.String(infoAnswer)
+			info.Answer = data.Answer
 		}
 		if data.TestId != nil {
 			info.TestId = proto.Uint64(*data.TestId)

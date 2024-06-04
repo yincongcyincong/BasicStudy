@@ -4,7 +4,7 @@ go 1.22.2
 
 require (
 	github.com/BurntSushi/toml v1.4.0
-	github.com/gin-contrib/sessions v1.0.1
+	github.com/anhao/go-ernie v1.0.9
 	github.com/gin-gonic/gin v1.10.0
 	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/sashabaranov/go-openai v1.24.1
@@ -27,9 +27,6 @@ require (
 	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/gorilla/context v1.1.2 // indirect
-	github.com/gorilla/securecookie v1.1.2 // indirect
-	github.com/gorilla/sessions v1.2.2 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
 	github.com/kr/pretty v0.3.0 // indirect

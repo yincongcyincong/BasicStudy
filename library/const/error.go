@@ -6,6 +6,7 @@ const (
 	DBQueryError = 2
 	DBExecError  = 3
 	AuthError    = 4
+	GPTErrorNo   = 5
 )
 
 const (
@@ -14,6 +15,7 @@ const (
 	DBQueryErrorMsg = "db query error"
 	DBExecErrorMsg  = "db exec error"
 	AuthErrorMsg    = "auth error"
+	GPTErrorMsg     = "gpt error"
 )
 
 func GetErrorMsg(no int) string {
